@@ -17,4 +17,5 @@ class Category(db.Model):
 class TaskForm(FlaskForm):
     title = StringField('Name of Song', validators=[DataRequired()])
     artist = StringField('Name of Artist', validators=[DataRequired()])
+    genre = StringField('Name of Genre', validators=[DataRequired()])
     submit = SubmitField('Add task')

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TimeField, DateField, SubmitField, SelectField
+from wtforms import StringField, TimeField, DateField, SubmitField, SelectField, FileField
 from flask_sqlalchemy import SQLAlchemy
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from flask import Flask
@@ -17,5 +17,5 @@ class Category(db.Model):
 class TaskForm(FlaskForm):
     title = StringField('Name of Song', validators=[DataRequired()])
     artist = StringField('Name of Artist', validators=[DataRequired()])
-    genre = StringField('Name of Genre', validators=[DataRequired()])
+    audiofile = FileField()
     submit = SubmitField('Add task')

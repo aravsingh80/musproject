@@ -82,28 +82,29 @@ def tasks():
                 check = 'Please check-box of task to be deleted'
 
         elif form.validate_on_submit():
-            print("song created")
-            # selected= form.category.data
-            # category= Category.query.get(selected)
-            todo = Todo(title=form.title.data, genre=form.genre.data, artist=form.artist.data)
-            db.session.add(todo)
-            db.session.commit()
-            flash('Congratulations, you just added a new note')
-            return redirect(url_for('task.tasks'))
+            print("submit")
+            file = form.audiofile.data
+            if file.filename == '':
+                flash('No file was selected')
+                return redirect(request.url)
+            elif file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(Configuration.UPLOAD_FOLDER, filename))
+                genre = genreClassifier()
+                print("song created")
+                # selected= form.category.data
+                # category= Category.query.get(selected)
+                todo = Todo(title=form.title.data, genre=genre, artist=form.artist.data)
+                db.session.add(todo)
+                db.session.commit()
+                flash('Congratulations, you just added a new note')
+                return redirect(url_for('task.tasks'))
+            else:
+                flash('Allowed media types are - mp3')
+                return redirect(request.url)
+            
         
 
-        file = request.files['file']
-        if file.filename == '':
-            flash('No file was selected')
-            return redirect(request.url)
-        elif file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(Configuration.UPLOAD_FOLDER, filename))
-            print(genreClassifier())
-            flash('File has been successfully uploaded')
-            return redirect('/create-task')
-        else:
-            flash('Allowed media types are - mp3')
-            return redirect(request.url)
+    
 
     return render_template('tasks.html', title='Create Tasks', form=form, todo=todo, check=check)

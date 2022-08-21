@@ -10,7 +10,7 @@
                         <span class="welcome-text">Manage Your ToDo List</span> 
                     </div>
 
-    <form action="" method="post" novalidate>
+    <form action="" method="post" novalidate enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <div class="inputContainer Task">
             {{ form.title.label }}<br>
@@ -22,10 +22,16 @@
         <div class="inputContainer Task">
             {{ form.artist.label }}<br>
             {{ form.artist(size=20) }}
-            {% for error in form.title.errors %}
+            {% for error in form.artist.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </div>
+        <p>
+            Upload a file
+              {{form.audiofile()}}
+          </p>
+        <!-- <input type=file name=file>
+    <input type=submit value=Upload> -->
         <div class="buttons">   
             {{ form.submit(class="taskAdd btn") }}
         </div> 
@@ -54,7 +60,7 @@
                         <input type="checkbox" class="taskCheckbox" name="checkedbox" id="{{ todo.id }}" value="{{ todo.id }}" >
                         <label for="{{ todo.id }}"><span class="complete-">{{ todo.title }}</span></label>
                         <label for="{{ todo.artist }}"><span class="complete-">{{ todo.artist }}</span></label>
-                        
+                        <label for="{{ todo.genre }}"><span class="complete-">{{ todo.genre }}</span></label>
                         <button class="taskDelete " name="taskDelete" formnovalidate="" type="submit" ><i class="fa fa-trash-o icon"></i></button>
                     </li>     
                     {% endfor %}
@@ -73,8 +79,5 @@
     <div class="done">
     </div>
 </div>
-<form method= "post" enctype=multipart/form-data>
-    <input type=file name=file>
-    <input type=submit value=Upload>
-</form>
+
 {% endblock %}

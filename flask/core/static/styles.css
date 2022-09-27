@@ -1,0 +1,28 @@
+.login
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.task_contentcategories
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.buttons
+{
+    transition-duration: 0.2s;
+}
+/* .sidebar
+{
+    text-align: center;
+} */
+.buttons:hover
+{
+    color: purple;
+}

@@ -1,13 +1,52 @@
 from flask import render_template, flash, redirect, url_for, request
-from .models import Category
+# from .models import Category
 from ..models import Todo
 from . import task
 from .forms import TaskForm
 from .. import db
-from datetime import datetime
+# from datetime import datetime
 from config import Configuration
 import os
 from werkzeug.utils import secure_filename
+import librosa
+import numpy as np
+import os
+
+# Preprocessing
+# from sklearn.preprocessing import StandardScaler
+
+#Keras
+import keras
+
+import warnings
+warnings.filterwarnings('ignore')
+
+genres = np.array('blues classical country disco hiphop jazz metal pop reggae rock'.split())
+
+def genreClassifier():
+    songFolder = 'C:\\Users\\urvaa\OneDrive\Desktop\React\\flask\\back\\uploads'
+    print(songFolder)
+    print(os.listdir(f'{songFolder}'))
+    for filename in os.listdir(f'{songFolder}'):
+        print(filename)
+        y, sr = librosa.load(f"{songFolder}\{filename}", mono=True, duration=30)
+        print(y)
+        chroma_stft = librosa.feature.chroma_stft(y=y, sr=sr)
+        rmse = librosa.feature.rms(y=y)
+        spec_cent = librosa.feature.spectral_centroid(y=y, sr=sr)
+        spec_bw = librosa.feature.spectral_bandwidth(y=y, sr=sr)
+        rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+        zcr = librosa.feature.zero_crossing_rate(y)
+        mfcc = librosa.feature.mfcc(y=y, sr=sr)
+        row = [np.mean(chroma_stft), np.mean(rmse), np.mean(spec_cent), np.mean(spec_bw), np.mean(rolloff), np.mean(zcr)]
+        for e in mfcc:
+            row.append(np.mean(e))
+    X = (np.array(row))[np.newaxis, :]
+    model = keras.models.load_model('C:\\Users\\urvaa\OneDrive\Desktop\React\\flask\core\\task\model_weights')
+    predictions = np.squeeze(model.predict(X))
+
+    model_prediction = np.argmax(predictions)
+    return genres[model_prediction]
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -43,27 +82,29 @@ def tasks():
                 check = 'Please check-box of task to be deleted'
 
         elif form.validate_on_submit():
-            print("song created")
-            # selected= form.category.data
-            # category= Category.query.get(selected)
-            todo = Todo(title=form.title.data, artist=form.artist.data)
-            db.session.add(todo)
-            db.session.commit()
-            flash('Congratulations, you just added a new note')
-            return redirect(url_for('task.tasks'))
+            print("submit")
+            file = form.audiofile.data
+            if file.filename == '':
+                flash('No file was selected')
+                return redirect(request.url)
+            elif file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(Configuration.UPLOAD_FOLDER, filename))
+                genre = genreClassifier()
+                print("song created")
+                # selected= form.category.data
+                # category= Category.query.get(selected)
+                todo = Todo(title=form.title.data, genre=genre, artist=form.artist.data)
+                db.session.add(todo)
+                db.session.commit()
+                flash('Congratulations, you just added a new note')
+                return redirect(url_for('task.tasks'))
+            else:
+                flash('Allowed media types are - mp3')
+                return redirect(request.url)
+            
         
 
-        file = request.files['file']
-        if file.filename == '':
-            flash('No file was selected')
-            return redirect(request.url)
-        elif file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(Configuration.UPLOAD_FOLDER, filename))
-            flash('File has been successfully uploaded')
-            return redirect('/create-task')
-        else:
-            flash('Allowed media types are - mp3')
-            return redirect(request.url)
+    
 
     return render_template('tasks.html', title='Create Tasks', form=form, todo=todo, check=check)

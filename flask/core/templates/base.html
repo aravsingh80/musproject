@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
     <head>
-      <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles.css') }}">
+      <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename='styles.css') }}">
       <!-- favicon --> 
-      <link rel="shortcut icon" href="{{url_for('static', filename='Logo.svg')}}" />
+      <!-- <link rel="shortcut icon" href="{{url_for('static', filename='Logo.svg')}}" /> -->
 
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
@@ -18,9 +18,9 @@
         {% endif %}
       {% endif %}
       {% if title %}
-      <title>{{ title }} - Blog</title>
+      <title>Music Uploader</title>
       {% else %}
-      <title>Welcome to Blog</title>
+      <title>Welcome to Music Uploader</title>
       {% endif %}
     </head>
     <body>

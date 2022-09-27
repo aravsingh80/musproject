@@ -4,6 +4,7 @@ from datetime import datetime
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(140))
+    genre = db.Column(db.String(140))
     # date = db.Column(db.Date())
     # time = db.Column(db.Time())
     artist= db.Column(db.String(140))

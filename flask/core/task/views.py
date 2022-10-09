@@ -16,7 +16,7 @@ import os
 # from sklearn.preprocessing import StandardScaler
 
 #Keras
-import keras
+from keras import models
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -42,7 +42,7 @@ def genreClassifier():
         for e in mfcc:
             row.append(np.mean(e))
     X = (np.array(row))[np.newaxis, :]
-    model = keras.models.load_model('C:\\Users\\urvaa\OneDrive\Desktop\React\\flask\core\\task\model_weights')
+    model = models.load_model('C:\\Users\\urvaa\OneDrive\Desktop\React\\flask\core\\task\model_weights')
     predictions = np.squeeze(model.predict(X))
 
     model_prediction = np.argmax(predictions)

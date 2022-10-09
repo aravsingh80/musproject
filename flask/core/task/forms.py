@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TimeField, DateField, SubmitField, SelectField, FileField
+from wtforms import StringField, SubmitField, FileField
 from flask_sqlalchemy import SQLAlchemy
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired
 from flask import Flask
 from config import Configuration
 app = Flask(__name__)

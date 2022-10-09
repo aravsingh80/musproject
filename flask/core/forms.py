@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TimeField, DateField, SubmitField, SelectField, FileField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import StringField, SubmitField, FileField
+from wtforms.validators import DataRequired
 
 class TaskForm(FlaskForm):
     title = StringField('Name of Song', validators=[DataRequired()])

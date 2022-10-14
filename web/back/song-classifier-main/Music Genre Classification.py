@@ -5,15 +5,12 @@
 
 
 # feature extractoring and preprocessing data
+# from sysconfig import get_python_version
 import librosa
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-get_ipython().magic('matplotlib inline')
-import os
-from PIL import Image
-import pathlib
-import csv
+# import matplotlib.pyplot as pltq
+# get_python_version().magic('matplotlib inline')
 
 # Preprocessing
 from sklearn.model_selection import train_test_split
@@ -57,10 +54,6 @@ Each genre contains 100 songs. Total dataset: 1000 songs
 
 
 # In[4]:
-
-
-
-cmap = plt.get_cmap('inferno')
 
 # plt.figure(figsize=(10,10))
 # genres = 'blues classical country disco hiphop jazz metal pop reggae rock'.split()
@@ -110,7 +103,6 @@ header = header.split()
 # In[9]:
 
 
-# file = open('data.csv', 'w', newline='')
 # with file:
 #     writer = csv.writer(file)
 #     writer.writerow(header)
@@ -145,7 +137,7 @@ genres = 'blues classical country disco hiphop jazz metal pop reggae rock'.split
 # In[11]:
 
 
-data = pd.read_csv('data.csv')
+data = pd.read_csv("/Users/shreeyagad/musproject/web/back/song-classifier-main/data.csv")
 data.head()
 
 
@@ -338,6 +330,7 @@ results
 
 
 predictions = model.predict(X_test)
+model.save("predictions")
 
 
 # In[37]:

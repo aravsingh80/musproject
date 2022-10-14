@@ -43,7 +43,7 @@ def genreClassifier():
         for e in mfcc:
             row.append(np.mean(e))
     X = (np.array(row))[np.newaxis, :]
-    model = models.load_model('C:\\Users\\urvaa\OneDrive\Desktop\React\\web\core\\task\model_weights')
+    model = models.load_model('C:\\Users\\urvaa\OneDrive\Desktop\React\\web\core\\task\model_weights.h5')
     predictions = np.squeeze(model.predict(X))
 
     model_prediction = np.argmax(predictions)
@@ -101,7 +101,6 @@ def tasks():
                 todo = Todo(title=form.title.data, genre=genre, artist=form.artist.data, user_id=user_id)
                 db.session.add(todo)
                 db.session.commit()
-                flash('Congratulations, you just added a new note')
                 return redirect(url_for('task.tasks'))
             else:
                 flash('Allowed media types are - mp3')

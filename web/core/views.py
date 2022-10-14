@@ -1,5 +1,6 @@
+from flask import redirect, url_for
 from . import app
 
 @app.route('/')
 def index():
-    return 'Hello Ace'
+    return redirect(url_for('auth.login'))

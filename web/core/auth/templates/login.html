@@ -4,8 +4,8 @@
 
 
 <a class="brand-logo" href="{{ url_for('index') }}">
-    <img class="logo" src="{{ url_for('static', filename='Logo.svg') }}">
-    <div class="brand-logo-name"><strong> ToDo </strong> </div>
+    
+    <div class="brand-logo-name"><strong> Music Classifier </strong> </div>
 </a>
 
 <!-- Display login error message-->
@@ -19,6 +19,7 @@
     <form action="" method="post" novalidate class="p-3 border border-2">
         {{ form.hidden_tag() }}
         <div class="Login-Header">
+            <h1>Welcome to the music classifier!</h1>
             <h4 class="mb-5">Login</h4>
         </div>
         <p>
@@ -46,12 +47,12 @@
 
     </div>
 </div>
-<VirtualHost *:80>
+<!-- <VirtualHost *:80>
     ServerName forward.mydomain.com
     ProxyPreserveHost On
 
     ProxyPass / http://127.0.0.1:5000/
     ProxyPassReverse / http://127.0.0.1:5000/
 
-</VirtualHost>
+</VirtualHost> -->
 {% endblock %}

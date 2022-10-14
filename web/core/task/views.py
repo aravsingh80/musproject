@@ -67,8 +67,9 @@ def tasks():
     form= TaskForm()
     # form.category.choices =[(category.id, category.name) for category in Category.query.all()]
     print(current_user._get_current_object())
-    print(current_user._get_current_object().email)
-    todo= Todo.query.all()
+    user_id = current_user._get_current_object().id
+    todo= Todo.query.filter_by(user_id=user_id)
+    print(todo)
     if request.method == "POST":
         print("Inside post")
         if request.form.get('taskDelete') is not None:
@@ -97,7 +98,7 @@ def tasks():
                 print("song created")
                 # selected= form.category.data
                 # category= Category.query.get(selected)
-                todo = Todo(title=form.title.data, genre=genre, artist=form.artist.data)
+                todo = Todo(title=form.title.data, genre=genre, artist=form.artist.data, user_id=user_id)
                 db.session.add(todo)
                 db.session.commit()
                 flash('Congratulations, you just added a new note')

@@ -1,3 +1,4 @@
+from msilib.schema import File
 from flask import render_template, flash, redirect, url_for, request
 # from .models import Category
 from ..models import Todo
@@ -24,26 +25,21 @@ warnings.filterwarnings('ignore')
 
 genres = np.array('blues classical country disco hiphop jazz metal pop reggae rock'.split())
 
-def genreClassifier():
-    songFolder = 'C:\\Users\\urvaa\OneDrive\Desktop\React\\web\\back\\uploads'
-    print(songFolder)
-    print(os.listdir(f'{songFolder}'))
-    for filename in os.listdir(f'{songFolder}'):
-        print(filename)
-        y, sr = librosa.load(f"{songFolder}\{filename}", mono=True, duration=30)
-        print(y)
-        chroma_stft = librosa.feature.chroma_stft(y=y, sr=sr)
-        rmse = librosa.feature.rms(y=y)
-        spec_cent = librosa.feature.spectral_centroid(y=y, sr=sr)
-        spec_bw = librosa.feature.spectral_bandwidth(y=y, sr=sr)
-        rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
-        zcr = librosa.feature.zero_crossing_rate(y)
-        mfcc = librosa.feature.mfcc(y=y, sr=sr)
-        row = [np.mean(chroma_stft), np.mean(rmse), np.mean(spec_cent), np.mean(spec_bw), np.mean(rolloff), np.mean(zcr)]
-        for e in mfcc:
-            row.append(np.mean(e))
+def genreClassifier(file):
+    y, sr = librosa.load(file, mono=True, duration=30)
+    print(y)
+    chroma_stft = librosa.feature.chroma_stft(y=y, sr=sr)
+    rmse = librosa.feature.rms(y=y)
+    spec_cent = librosa.feature.spectral_centroid(y=y, sr=sr)
+    spec_bw = librosa.feature.spectral_bandwidth(y=y, sr=sr)
+    rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+    zcr = librosa.feature.zero_crossing_rate(y)
+    mfcc = librosa.feature.mfcc(y=y, sr=sr)
+    row = [np.mean(chroma_stft), np.mean(rmse), np.mean(spec_cent), np.mean(spec_bw), np.mean(rolloff), np.mean(zcr)]
+    for e in mfcc:
+        row.append(np.mean(e))
     X = (np.array(row))[np.newaxis, :]
-    model = models.load_model('C:\\Users\\urvaa\OneDrive\Desktop\React\\web\core\\task\model_weights.h5')
+    model = models.load_model('web\core\\task\model_weights.h5')
     predictions = np.squeeze(model.predict(X))
 
     model_prediction = np.argmax(predictions)
@@ -93,8 +89,8 @@ def tasks():
                 return redirect(request.url)
             elif file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(Configuration.UPLOAD_FOLDER, filename))
-                genre = genreClassifier()
+                #file.save(os.path.join(Configuration.UPLOAD_FOLDER, filename))
+                genre = genreClassifier(file)
                 print("song created")
                 # selected= form.category.data
                 # category= Category.query.get(selected)

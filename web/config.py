@@ -10,5 +10,5 @@ class Configuration(object):
         'sqlite:///' + os.path.join(basedir, 'todo.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = os.path.join(basedir, 'back/uploads')
-    ALLOWED_EXTENSIONS = {'wav', 'mp3'}
+    ALLOWED_EXTENSIONS = {'wav', 'mp3', 'mpeg'}
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
